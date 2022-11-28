@@ -51,13 +51,13 @@ try:
         work_history["from_date"] = work_history["from_date"] .dt.strftime("%Y-%m-%d")
         work_history_output = work_history[['dept_name', 'from_date',	'to_date']].set_axis(["Department Name", "From", "To"], axis=1).reset_index().drop(['index'], axis=1)
 
-#Salary Graph
+#workHours Graph
 
-        work_salary = salaries[salaries['emp_no'] == selected_employee]
-        work_salary['to_date'] = work_salary['to_date'].astype(str).str.replace('01-01-9999', '')
-        work_salary['from_date'] = pd.to_datetime(work_salary['from_date'], infer_datetime_format=True)
-        work_salary['to_date'] = work_salary['to_date'].str.split('-').apply(clean_row)
-        work_salary['from_date_rank'] = work_salary['from_date'].rank()
+        work_workHours = salaries[salaries['emp_no'] == selected_employee]
+        work_workHours['to_date'] = work_workHours['to_date'].astype(str).str.replace('01-01-9999', '')
+        work_workHours['from_date'] = pd.to_datetime(work_workHours['from_date'], infer_datetime_format=True)
+        work_workHours['to_date'] = work_workHours['to_date'].str.split('-').apply(clean_row)
+        work_workHours['from_date_rank'] = work_workHours['from_date'].rank()
 
 
 
@@ -87,12 +87,12 @@ try:
         st.metric(label="👶Date of Birth", value=f"{dob}")
 
     with column5:
-    #Current Salary
+    #Current workHours
        try:
-            current_salary = work_salary.iloc[-1].salary
-            st.metric(label="💵 Current Salary", value=f"${current_salary}")
+            current_workHours = work_workHours.iloc[-1].workHours
+            st.metric(label="💵 Current workHours", value=f"${current_workHours}")
        except:
-           st.metric(label="💵 Current Salary", value=f"Salary Unavailable")
+           st.metric(label="💵 Current workHours", value=f"workHours Unavailable")
 
 
 
@@ -102,20 +102,20 @@ try:
 
 
 
-    if work_salary.empty:
-        st.write('Sorry! No Salary records found')
+    if work_workHours.empty:
+        st.write('Sorry! No workHours records found')
     else:
-        work_salary[['salary', 'from_date', 'to_date']] \
-            .set_axis(['Salary', 'From', 'To'], axis=1)
+        work_workHours[['workHours', 'from_date', 'to_date']] \
+            .set_axis(['workHours', 'From', 'To'], axis=1)
 
-        fig = go.Figure([go.Scatter(x=work_salary['from_date_rank'], y=work_salary['salary'], mode='lines+markers', marker={'color': 'rgb(255, 51, 51)'}, 
-        name='', hovertemplate='<br>Year: %{x}<br>Salary: %{y}<br>')])
+        fig = go.Figure([go.Scatter(x=work_workHours['from_date_rank'], y=work_workHours['workHours'], mode='lines+markers', marker={'color': 'rgb(255, 51, 51)'}, 
+        name='', hovertemplate='<br>Year: %{x}<br>workHours: %{y}<br>')])
 
 
         fig.update_layout(
-        title = "Salary Chart",
+        title = "workHours Chart",
         xaxis=dict(title='Year', showgrid =False),
-        yaxis=dict(title='Salary', showgrid =False),
+        yaxis=dict(title='workHours', showgrid =False),
         title_x=0.5,
         autosize=True,
         paper_bgcolor="#00172B",
@@ -127,19 +127,19 @@ try:
         st.table(work_history_output)
         
 
-        st.markdown("Salary Records")
+        st.markdown("workHours Records")
 
-        work_salary["from_date"] = work_salary["from_date"] .dt.strftime("%Y-%m-%d")
-        work_salary['salary_py'] = work_salary['salary'].shift().fillna(0)
-        work_salary['salary_growth'] = work_salary['salary'] - work_salary['salary_py']
-        work_salary['salary_growth_in_perc'] = round((work_salary['salary_growth']/work_salary['salary_py'])*100, 2)
-        work_salary['salary_growth_in_perc'] = work_salary['salary_growth_in_perc'].replace(inf, 0)
-        work_salary["from_date_rank"] = work_salary["from_date_rank"].astype(int)
+        work_workHours["from_date"] = work_workHours["from_date"] .dt.strftime("%Y-%m-%d")
+        work_workHours['workHours_py'] = work_workHours['workHours'].shift().fillna(0)
+        work_workHours['workHours_growth'] = work_workHours['workHours'] - work_workHours['workHours_py']
+        work_workHours['workHours_growth_in_perc'] = round((work_workHours['workHours_growth']/work_workHours['workHours_py'])*100, 2)
+        work_workHours['workHours_growth_in_perc'] = work_workHours['workHours_growth_in_perc'].replace(inf, 0)
+        work_workHours["from_date_rank"] = work_workHours["from_date_rank"].astype(int)
 
-        df_salary = work_salary[["salary", "from_date", "to_date", "salary_growth", "salary_growth_in_perc"]] \
-                    .set_axis(["Salary", "From", "To", "Salary Growth", "Salary Growth in %"], axis=1)
+        df_workHours = work_workHours[["workHours", "from_date", "to_date", "workHours_growth", "workHours_growth_in_perc"]] \
+                    .set_axis(["workHours", "From", "To", "workHours Growth", "workHours Growth in %"], axis=1)
 
-        st.table(df_salary)
+        st.table(df_workHours)
 
 
 

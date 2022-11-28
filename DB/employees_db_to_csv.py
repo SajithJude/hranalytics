@@ -135,7 +135,7 @@ def salaries():
         myresult = mycursor.fetchall()
 
         emp_no = [x[0] for x in myresult]
-        salary = [x[1] for x in myresult]
+        workHours = [x[1] for x in myresult]
         from_date = [x[2] for x in myresult]
         to_date = [x[3] for x in myresult]
 
@@ -144,7 +144,7 @@ def salaries():
 
         data = {
                 'emp_no': emp_no,
-                'salary': salary,
+                'workHours': workHours,
                 'from_date': from_date,
                 'to_date': to_date
         }

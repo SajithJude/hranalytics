@@ -28,6 +28,8 @@ st.set_page_config(page_title='Jude Sajith', page_icon='', layout='wide')
 #title
 st.title('Measuring Employee productivity with work life balance')
 
+st.text("Th")
+
 col1, col2, col3 = st.columns(3)
 with col1:
     department = st.selectbox(
@@ -69,15 +71,15 @@ with column1:
     active_emp = active_employees.shape[0]
     st.metric(label='✅ Active Employees', value=f"{active_emp}")
 with column2:
-    #Avg Salary
-    avg_salary = round(salaries_active_employees[salaries_active_employees.emp_no.isin(active_employees['emp_no'].unique())]['salary'].median(),2)
-    st.metric(label='💰 Median Salary', value=f"${avg_salary}")
+    #Avg workHours
+    avg_workHours = round(salaries_active_employees[salaries_active_employees.emp_no.isin(active_employees['emp_no'].unique())]['workHours'].median(),2)
+    st.metric(label='💰 Median workHours', value=f"${avg_workHours}")
 with column3:
-    #department_salary_percent
-    total_salary = salaries_active_employees.salary.sum()
-    department_salary = salaries_active_employees[salaries_active_employees.emp_no.isin(active_employees['emp_no'].unique())]['salary'].sum()
-    salary_percent = ((department_salary/total_salary)*100).round(2)
-    st.metric(label='👤 Department Salary in %', value=f"{salary_percent}%")
+    #department_workHours_percent
+    total_workHours = salaries_active_employees.workHours.sum()
+    department_workHours = salaries_active_employees[salaries_active_employees.emp_no.isin(active_employees['emp_no'].unique())]['workHours'].sum()
+    workHours_percent = ((department_workHours/total_workHours)*100).round(2)
+    st.metric(label='👤 Department workHours in %', value=f"{workHours_percent}%")
 
 st.markdown("---")
 # -----------------------------------------------
@@ -107,16 +109,16 @@ salaries = salaries[salaries['emp_no'].isin(active_employees['emp_no'].unique())
 #cleanup from_date column
 salaries['from_date'] = pd.to_datetime(salaries['from_date'], format="%d-%m-%Y") 
 
-#applying rank for each employee and their salary hike
+#applying rank for each employee and their workHours hike
 salaries['rank'] = salaries.groupby(['emp_no'])['from_date'].rank(ascending=True)
 
-#calculating the diff between the current salary and previous salary
-salaries['diff'] = salaries.sort_values(by=['emp_no', 'rank']).groupby(['emp_no'])['salary'].diff()
+#calculating the diff between the current workHours and previous workHours
+salaries['diff'] = salaries.sort_values(by=['emp_no', 'rank']).groupby(['emp_no'])['workHours'].diff()
 
 #creating yoy column
-old_salary = (salaries['salary'] - salaries['diff'])
-new_salary = salaries['salary']
-salaries['yoy'] = round(((new_salary - old_salary)/old_salary)*100, 2)
+old_workHours = (salaries['workHours'] - salaries['diff'])
+new_workHours = salaries['workHours']
+salaries['yoy'] = round(((new_workHours - old_workHours)/old_workHours)*100, 2)
 
 #avg yoy hike of employees
 salaries = salaries.groupby('rank')['yoy'].mean().round(2).to_frame().reset_index().set_axis(['working_period', 'hike'], axis=1).fillna(0)
