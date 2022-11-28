@@ -73,7 +73,7 @@ with column1:
 with column2:
     #Avg workHours
     avg_workHours = round(salaries_active_employees[salaries_active_employees.emp_no.isin(active_employees['emp_no'].unique())]['workHours'].median(),2)
-    st.metric(label='💰 Median workHours', value=f"${avg_workHours}")
+    st.metric(label='⏱️ Median workHours', value=f"mins {avg_workHours}")
 with column3:
     #department_workHours_percent
     total_workHours = salaries_active_employees.workHours.sum()

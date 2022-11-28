@@ -90,7 +90,7 @@ try:
     #Current workHours
        try:
             current_workHours = work_workHours.iloc[-1].workHours
-            st.metric(label="💵 Current workHours", value=f"${current_workHours}")
+            st.metric(label="💵 Current workHours", value=f"mins {current_workHours}")
        except:
            st.metric(label="💵 Current workHours", value=f"workHours Unavailable")
 
