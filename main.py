@@ -14,7 +14,7 @@ titles = pd.read_csv('titles.csv')
 # -----------------------------------------------
 #------------------------------------------------
 
-st.set_page_config(page_title='HR Analytics', page_icon='🎯', layout='wide')
+st.set_page_config(page_title='Jude Sajith', page_icon='', layout='wide')
 
 # -----------------------------------------------
 #------------------------------------------------
@@ -26,7 +26,7 @@ st.set_page_config(page_title='HR Analytics', page_icon='🎯', layout='wide')
 # )
 
 #title
-st.title('🎯 HR Analytics')
+st.title('Measuring Employee productivity with work life balance')
 
 col1, col2, col3 = st.columns(3)
 with col1:
